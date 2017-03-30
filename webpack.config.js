@@ -2,7 +2,7 @@ const ngtools = require('@ngtools/webpack');
 
 module.exports = {
     entry: {
-	main: './src/main.server.ts'
+	main: './main.server.ts'
     },
     resolve: {
 	extensions: ['.ts', '.js']

@@ -40,3 +40,10 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# 
+/src/**/*.ngfactory.ts
+/src/**/*.ngsummary.ts
+/src/**/*.ngsummary.json
+/src/**/*.ngstyle.ts
+/e2e/app.po.ngsummary.json

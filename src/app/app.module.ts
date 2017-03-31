@@ -1,3 +1,6 @@
+import { SeoPageIdGuard } from './seo-page-id-guard';
+import { SeoGuard } from './seo.guard';
+import { SeoService } from './seo.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -24,13 +27,30 @@ import { PageIdComponent } from './page-id/page-id.component';
     HttpModule,
     RouterModule.forRoot([
       {
-        path: '', component: HomeComponent
+        path: '', component: HomeComponent,
+        canActivate: [SeoGuard],
+        data: {
+          title: ['Home page'],
+          desc: 'My First Static Website built with Angular Universal'
+        }
       },
-      { path: 'page.html', component: PageComponent },
-      { path: 'page/:id', component: PageIdComponent }
+      {
+        path: 'page.html', component: PageComponent,
+        canActivate: [SeoGuard],
+        data: {
+          title: ['Elements List'],
+          desc: 'My List of elements in my Static Website'
+        }
+      },
+      {
+        path: 'page/:id', component: PageIdComponent,
+        canActivate: [SeoPageIdGuard]
+      }
     ])
   ],
-  providers: [],
+  providers: [
+    SeoService, SeoGuard, SeoPageIdGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

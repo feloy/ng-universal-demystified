@@ -3,28 +3,37 @@ import { renderModuleFactory } from '@angular/platform-server'
 import { enableProdMode } from '@angular/core'
 import { AppServerModuleNgFactory } from './src/app.server.module.ngfactory'
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 enableProdMode();
 
 const args = process.argv.slice(2);
-if (args.length != 1) {
-    process.stdout.write("Usage: node dist/main.js <url>\n");
+if (args.length != 3) {
+    process.stdout.write("Usage: node dist/main.js <document> <distDir> <url>\n");
     process.exit();
 }
 
-renderModuleFactory(AppServerModuleNgFactory, {
-    document: `<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>NgUniversalFromScratch</title>
-  <base href="/">
+const indexFileContent = fs.readFileSync(args[0], 'utf8');
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root>Loading...</app-root>
-</body>
-</html>`,
-    url: args[0]
-}).then(string => process.stdout.write(string));
+renderModuleFactory(AppServerModuleNgFactory, {
+    document: indexFileContent,
+    url: args[2]
+}).then(string => {
+    let destUrl = args[2];
+    if (destUrl == '/')
+	destUrl = 'index.html'
+    const targetDir = args[1] + '/' + destUrl;
+    targetDir.split('/').forEach((dir, index, splits) => {
+	if (index !== splits.length - 1) {
+	    const parent = splits.slice(0, index).join('/');
+	    const dirPath = path.resolve(parent, dir);
+	    if (!fs.existsSync(dirPath)) {
+		fs.mkdirSync(dirPath);
+	    }
+	}
+    });
+
+    fs.writeFileSync(targetDir, string)
+    console.log(targetDir);
+});

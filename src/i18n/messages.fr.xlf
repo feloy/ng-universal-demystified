@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="17785a2c638b514855df2e77832da93e04a3c944" datatype="html">
+        <source>
+  home works!
+</source>
+<target>Ça marche !</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
